@@ -5,7 +5,19 @@ from data_fetcher import get_stock_data
 from score_engine import calculate_score
 from score_engine import recommendation
 
+from services.stock_service import StockService
+from services.finance_service import FinanceService
+from utils.formatter import Formatter
 
+stock = StockService().fetch("INFY")
+financials = FinanceService.extract(stock.info)
+
+st.metric("Revenue", Formatter.currency(financials.revenue))
+st.metric("Revenue Growth", Formatter.percentage(financials.revenue_growth))
+st.metric("PAT", Formatter.currency(financials.pat))
+st.metric("ROE", Formatter.percentage(financials.roe))
+st.metric("P/E", Formatter.ratio(financials.pe))
+st.metric("Market Cap", Formatter.market_cap(stock.market_cap))
 
 st.set_page_config(
     page_title="StockIQ AI",
