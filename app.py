@@ -1,8 +1,11 @@
 import streamlit as st
+import plotly.express as px
 
 from data_fetcher import get_stock_data
 from score_engine import calculate_score
 from score_engine import recommendation
+
+
 
 st.set_page_config(
     page_title="StockIQ AI",
@@ -62,3 +65,19 @@ if st.button("Analyze"):
     st.header("Raw Data")
 
     st.json(data)
+    fig = px.line(
+
+    stock.history,
+
+    x=stock.history.index,
+
+    y="Close",
+
+    title="1 Year Stock Price"
+
+)
+
+st.plotly_chart(fig, use_container_width=True)
+stock.history["RSI"] = Technicals.rsi(stock.history)
+
+st.line_chart(stock.history["RSI"])
